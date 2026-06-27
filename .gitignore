@@ -1,0 +1,11 @@
+# OS files
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
