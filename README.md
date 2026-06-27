@@ -23,7 +23,15 @@
 README.md
 ```
 
-本版本不包含 `.claude/commands/`，只保留正式 Skill 文件。上传 GitHub 时可以直接上传整个仓库目录。
+上传 GitHub 时可直接上传整个仓库目录。
+
+## 快速使用
+
+1. **复制到全局配置** — 把本仓库里的 `.claude` 文件夹，合并到 `C:\Users\你的用户名\.claude\`
+2. **重启 Claude Code**，或在对话框输入 `/reload-plugins`
+3. **开始使用**：
+   - 清理系统盘：`/disk-cleanup-system 帮我安全清理C盘`
+   - 分析其他盘：`/disk-cleanup-non-system 帮我分析D盘`
 
 ## v3 重点规则
 
@@ -34,40 +42,17 @@ README.md
 - 大量小文件目录只统计总量，不展开文件级明细；
 - 能判断目录类型就早停，不为了完整性强行读完；
 - 超时、权限拒绝、Junction 循环风险时跳过并标注；
-- 输出为“分类汇总 + 可清理潜力 + 确认清单”；
+- 输出为"分类汇总 + 可清理潜力 + 确认清单"；
 - 删除、迁移、清空、Docker prune、DISM、关闭休眠等操作必须用户确认。
 
-## 安装到全局 Claude Code
+## 效果展示
 
-将本仓库里的 `.claude` 文件夹合并到：
+![开始的交互](screenshot-1.png)
 
-```text
-C:\Users\你的用户名\.claude\
-```
+![输出内容](screenshot-2.png)
 
-最终结构应类似：
+![确认交互](screenshot-3.png)
 
-```text
-C:\Users\你的用户名\.claude\skills\disk-cleanup-system\SKILL.md
-C:\Users\你的用户名\.claude\skills\disk-cleanup-non-system\SKILL.md
-```
+## 安全设计说明
 
-然后重启 Claude Code，或执行：
-
-```text
-/reload-plugins
-```
-
-## 测试触发
-
-```text
-/disk-cleanup-system 帮我安全清理C盘，不要丢浏览器登录
-```
-
-```text
-/disk-cleanup-non-system 帮我分析D盘，只能在D盘内操作，不要跨盘
-```
-
-## 注意
-
-本 Skill 默认不提供一键清理脚本。`scripts/README.md` 只说明脚本策略：如确需脚本，只允许按实际环境临时生成只读扫描脚本；删除、移动、迁移、清空等操作必须先输出确认清单并得到用户确认。
+本 Skill **不会自动执行任何删除或清理操作**。所有涉及删除、移动、迁移、清空、Docker prune、DISM、关闭休眠等操作，都必须先输出确认清单，得到你明确同意后才会执行。这样的设计是为了确保你对每一步操作都有完全的控制权，避免误删重要文件。
