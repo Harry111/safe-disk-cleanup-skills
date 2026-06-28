@@ -19,6 +19,27 @@
 - 大目录先看总大小，再决定是否深入；
 - 小文件爆炸目录只统计大小、数量、修改时间。
 
+## 超时与重试
+
+- 单目录 `du -sh` 或 `du --max-depth=1` 默认超时 **15 秒**；
+- bash 实现：`du ... & PID=$!; sleep 15; kill $PID 2>/dev/null; wait $PID 2>/dev/null`；
+- 超时后跳过该目录、记录原因、标记「建议单独分析」；
+- **同一目录最多重试 2 次**，不要反复死磕；
+- 权限拒绝、Junction 循环同理——跳过，不要重试。
+
+## depth-0 vs depth-1
+
+以下目录类型 **depth-0 够用**（只取总大小），不需要 depth-1：
+
+- node_modules、.git、venv、.venv、__pycache__
+- dist、build、target、.next、.nuxt、.turbo
+- .cache、Cache、Code Cache、GPUCache
+- temp、tmp、logs
+- pnpm-store、.pnpm-store、npm cache、pip cache
+- .cloud_cache_*（云同步本地缓存）
+
+原因：内部结构没有决策价值。要么是可重建依赖（删不删取决于项目是否还在用），要么是纯缓存（可以直接清理）。
+
 ## 只统计不展开的目录
 
 - node_modules
